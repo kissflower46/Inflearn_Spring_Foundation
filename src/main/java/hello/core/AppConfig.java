@@ -10,6 +10,8 @@ import hello.core.member.MemoryMemberRepository;
 import hello.core.order.Order;
 import hello.core.order.OrderService;
 import hello.core.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * fileName       : AppConfig
@@ -17,20 +19,25 @@ import hello.core.order.OrderServiceImpl;
  * date           : 25. 6. 13.
  * description    :
  */
+@Configuration
 public class AppConfig {
 
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(getMemberRepository());
     }
 
-    private static MemberRepository getMemberRepository() {
-        return new MemoryMemberRepository();
-    }
-
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(getMemberRepository(), discountPolicy());
     }
 
+    @Bean
+    private static MemberRepository getMemberRepository() {
+        return new MemoryMemberRepository();
+    }
+
+    @Bean
     public DiscountPolicy discountPolicy() {
         //return new FixDiscountPolicy();
         return new RateDiscountPolicy();
